@@ -1,0 +1,55 @@
+{
+  "name": "react-typescript-webpack2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dev-server.js",
+    "lint": "tslint src/*.tsx src/**/*.tsx",
+    "test": "jest"
+  },
+  "private": true,
+  "author": "Lars",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^16.0.1",
+    "@types/lodash": "^4.14.50",
+    "@types/react": "^15.0.0",
+    "@types/react-dom": "^0.14.19",
+    "@types/react-test-renderer": "^15.4.0",
+    "@types/whatwg-fetch": "0.0.33",
+    "awesome-typescript-loader": "^3.0.0-beta.10",
+    "css-loader": "^0.26.1",
+    "jest": "^18.1.0",
+    "less": "^2.7.2",
+    "less-loader": "^2.2.3",
+    "react-test-renderer": "^15.4.1",
+    "source-map-loader": "^0.1.5",
+    "style-loader": "^0.13.1",
+    "ts-jest": "^18.0.1",
+    "tslint": "^4.0.2",
+    "tslint-react": "^2.0.0",
+    "typescript": "^2.1.4",
+    "webpack": "^2.1.0-beta.27",
+    "webpack-dev-server": "^2.1.0-beta.12"
+  },
+  "dependencies": {
+    "antd": "^2.6.4",
+    "es6-promise": "^4.0.5",
+    "lodash": "^4.17.4",
+    "react": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "whatwg-fetch": "^2.0.1"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ]
+  }
+}
