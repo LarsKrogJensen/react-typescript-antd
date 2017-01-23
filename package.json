@@ -15,6 +15,7 @@
     "@types/jest": "^16.0.1",
     "@types/lodash": "^4.14.50",
     "@types/react": "^15.0.0",
+    "@types/react-addons-css-transition-group": "^15.0.0",
     "@types/react-dom": "^0.14.19",
     "@types/react-test-renderer": "^15.4.0",
     "@types/whatwg-fetch": "0.0.33",
@@ -40,6 +41,7 @@
     "es6-promise": "^4.0.5",
     "lodash": "^4.17.4",
     "react": "^15.4.1",
+    "react-addons-css-transition-group": "^15.4.2",
     "react-dom": "^15.4.1",
     "whatwg-fetch": "^2.0.1"
   },
