@@ -1,6 +1,8 @@
 import * as React from "react";
-import {Table, Row, Col,Input} from "antd";
+import {Table, Row, Col, Input} from "antd";
 import {TableColumnConfig} from "antd/lib/table/Table";
+import {util} from "../util/util";
+import {RowEx} from "./LayoutEx";
 const Search = Input.Search;
 
 export interface SearchPanelProps
@@ -42,13 +44,16 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
             title: 'Name',
             dataIndex: 'name',
             width: 150,
+            sorter: util.strCompare
         }, {
             title: 'Age',
             dataIndex: 'age',
             width: 150,
+            sorter: util.numCompare
         }, {
             title: 'Address',
             dataIndex: 'address',
+            sorter: util.strCompare
         }];
 
         //noinspection JSMismatchedCollectionQueryUpdate
@@ -63,14 +68,14 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
         }
 
         return <div>
-            <Row>
+            <RowEx paddingBottom={24}>
                 <Col span={24}>
                     <Search
                         placeholder="input search text"
                         style={{ width: 200 }}
                         onSearch={(value: any) => console.log(value)}/>
                 </Col>
-            </Row>
+            </RowEx>
             <Row>
                 <Col span={24}>
                     <SearchTable columns={columns}
@@ -80,7 +85,5 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
                 </Col>
             </Row>
         </div>
-
     }
 }
-
