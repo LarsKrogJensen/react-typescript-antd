@@ -3,7 +3,7 @@ import * as React from "react";
 import {api} from "../util/api";
 import {Layout, Menu, Icon} from "antd";
 // import {SearchPanel} from "./SearchPanel";
-import {AuthForm} from "./AuthForm";
+import {default as AuthFormer} from "./AuthForm";
 import {SelectParam} from "antd/lib/menu";
 import {SearchPanel} from "./SearchPanel";
 import {GridTest} from "./GrdTest";
@@ -22,6 +22,7 @@ interface AppState
 }
 
 type PartialAppState = Partial<AppState>;
+
 
 export class App extends React.Component<AppProps, AppState>
 {
@@ -59,7 +60,7 @@ export class App extends React.Component<AppProps, AppState>
     {
         let panelKey = this.state.panelKey;
         if (panelKey == "auth") {
-            return <AuthForm/>
+            return <AuthFormer/>
         }
         if (panelKey == "search") {
             return <SearchPanel/>
@@ -96,7 +97,7 @@ export class App extends React.Component<AppProps, AppState>
                 </Menu>
             </Sider>
             <Layout>
-                <Header>
+                <Header className="header">
                     <div>Header</div>
                 </Header>
                 <Content style={{  padding: 24 }}>
