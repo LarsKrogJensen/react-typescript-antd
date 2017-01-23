@@ -69,6 +69,15 @@ export class App extends React.Component<AppProps, AppState>
             return <GridTest key="test"/>
         }
     }
+    private renderLogo(): JSX.Element
+    {
+        if (this.state.collapsed) {
+            return <img width={24} height={24} src="dist/assets/slack.svg"/>
+        }
+
+        return <img width={32} height={32} src="dist/assets/slack.svg"/>
+    }
+
 
     render()
     {
@@ -78,7 +87,7 @@ export class App extends React.Component<AppProps, AppState>
                 collapsed={this.state.collapsed}
                 onCollapse={this.onCollapse}>
                 <div className="logo">
-                    <img width={114} height={32} src="dist/assets/kambi-logo.png"/>
+                    {this.renderLogo()}
                 </div>
 
                 <Menu theme="dark"
@@ -111,7 +120,7 @@ export class App extends React.Component<AppProps, AppState>
                     <ReactCSSTransitionGroup
                         transitionName="example"
                         transitionEnterTimeout={300}
-                        transitionLeaveTimeout={300}>
+                        transitionLeaveTimeout={50}>
                         {this.renderContent()}
                     </ReactCSSTransitionGroup>
                 </Content>

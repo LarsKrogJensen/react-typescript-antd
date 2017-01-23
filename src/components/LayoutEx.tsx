@@ -32,7 +32,7 @@ export interface PaddingEx
 }
 export interface RowExProps extends RowProps, PaddingEx
 {
-
+    [key: string]: any;
 }
 
 export class RowEx extends React.Component<RowExProps, any>
@@ -42,8 +42,22 @@ export class RowEx extends React.Component<RowExProps, any>
         super(props, context);
     }
 
+
     render()
     {
-        return <Row style={this.props} {...this.props}>{this.props.children}</Row>
+        var rowProps = limitedAssign(this.props)
+        return <Row style={this.props} {...rowProps}>{this.props.children}</Row>
     }
+}
+
+function limitedAssign(source: RowExProps): RowProps
+{
+    var dest: RowProps = {}
+    var dest2: RowExProps = {}
+    for (var propKey in dest) {
+        if (source[propKey] && dest.hasOwnProperty(propKey)) {
+            dest2[propKey] = source[propKey];
+        }
+    }
+    return dest2;
 }

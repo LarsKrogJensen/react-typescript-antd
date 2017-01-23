@@ -2,11 +2,11 @@
 }
 
 #app .logo {
-    /*height: 32px;*/
+    height: 32px;
     /*background: #333;*/
     /*border-radius: 6px;*/
     margin: 16px;
-    /*border-image: url("/dist/assets/kambi.png");*/
+    transition: all 0.3s ease;
 }
 
 #app .ant-layout-sider-collapsed .anticon {
@@ -30,19 +30,19 @@
 }
 
 .example-enter {
-  opacity: 0.01;
+    opacity: 0.01;
 }
 
 .example-enter.example-enter-active {
-  opacity: 1;
-  transition: opacity 300ms ease-in;
+    opacity: 1;
+    transition: opacity 300ms ease-in;
 }
 
 .example-leave {
-  opacity: 1;
+    opacity: 1;
 }
 
 .example-leave.example-leave-active {
-  opacity: 0.01;
-  transition: opacity 300ms ease-in;
+    opacity: 0.01;
+    transition: opacity 50ms ease-in;
 }
