@@ -2,18 +2,12 @@ import "./app.css";
 import * as React from "react";
 import {api} from "../util/api";
 import {Layout, Menu, Icon, Row, Col} from "antd";
-import {AuthForm} from "./AuthForm";
 import {SelectParam} from "antd/lib/menu";
-import {SearchPanel} from "./SearchPanel";
-import {GridTest} from "./GrdTest";
 import "../assets/kambi-logo.png";
-import {Router, hashHistory} from "react-router";
+import {Router, Link, hashHistory} from "react-router";
 import ReactCSSTransitionGroup = require("react-addons-css-transition-group");
 import ReactElement = React.ReactElement;
 const {Header, Content, Sider} = Layout;
-
-// const DuckImage = require('../assets/slack.svg');
-
 
 export interface AppProps extends Router.RouteComponentProps<any, any>
 {
@@ -23,7 +17,6 @@ interface AppState
 {
     token?: api.AccessToken;
     collapsed: boolean;
-    panelKey: string;
 }
 
 type PartialAppState = Partial<AppState>;
@@ -34,7 +27,7 @@ export class App extends React.Component<AppProps, AppState>
     constructor(props: AppProps, context: any)
     {
         super(props, context);
-        this.state = {collapsed: false, panelKey: "auth"};
+        this.state = {collapsed: false};
         this.onTokenChanged = this.onTokenChanged.bind(this);
         this.onCollapse = this.onCollapse.bind(this);
         this.onMenuSelected = this.onMenuSelected.bind(this);
@@ -58,22 +51,13 @@ export class App extends React.Component<AppProps, AppState>
     private onMenuSelected(param: SelectParam)
     {
         console.log(param.key);
-        // this.updateState({panelKey: param.key});
         hashHistory.push(param.key)
     }
 
-    private renderContent(): JSX.Element
+    protected shouldComponentUpdate(prevState: AppProps, nextState: AppProps) :boolean
     {
-        let panelKey = this.state.panelKey;
-        if (panelKey == "auth") {
-            return <AuthForm key="auth"/>
-        }
-        if (panelKey == "search") {
-            return <SearchPanel key="search"/>
-        }
-        if (panelKey == "test") {
-            return <GridTest key="test"/>
-        }
+       console.log("Should update")
+        return true
     }
 
     private renderLogo(): JSX.Element
@@ -85,12 +69,9 @@ export class App extends React.Component<AppProps, AppState>
         return <img width={32} height={32} src="dist/assets/slack.svg"/>
     }
 
-
     render()
     {
         console.log("Current location: " + this.props.location.pathname)
-        // if (this.props.children == null)
-        //     return <div> children null </div>
 
         return (
             <Layout style={{height: '100%', background: 'white'}}>
@@ -136,6 +117,7 @@ export class App extends React.Component<AppProps, AppState>
                             {React.cloneElement(this.props.children as ReactElement<any>, {
                                 key: location.hash
                             })}
+                            {/*{this.props.children}*/}
                         </ReactCSSTransitionGroup>
                     </Content>
                 </Layout>
