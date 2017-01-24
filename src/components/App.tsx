@@ -1,10 +1,11 @@
 import "./app.css";
 import * as React from "react";
 import {api} from "../util/api";
+import {AuthForm} from "./AuthForm"
 import {Layout, Menu, Icon, Row, Col} from "antd";
 import {SelectParam} from "antd/lib/menu";
 import "../assets/kambi-logo.png";
-import {Router, Link, hashHistory} from "react-router";
+import {Router, Link, browserHistory} from "react-router";
 import ReactCSSTransitionGroup = require("react-addons-css-transition-group");
 import ReactElement = React.ReactElement;
 const {Header, Content, Sider} = Layout;
@@ -51,7 +52,7 @@ export class App extends React.Component<AppProps, AppState>
     private onMenuSelected(param: SelectParam)
     {
         console.log(param.key);
-        hashHistory.push(param.key)
+        browserHistory.push(param.key)
     }
 
     protected shouldComponentUpdate(prevState: AppProps, nextState: AppProps) :boolean
@@ -71,8 +72,14 @@ export class App extends React.Component<AppProps, AppState>
 
     render()
     {
-        console.log("Current location: " + this.props.location.pathname)
+        let pathname = this.props.location.pathname;
+        console.log("Current location: " + pathname)
 
+        if (pathname == "/")
+            pathname = "/auth"
+        let contentView = this.props.children
+        if (contentView == null)
+            contentView = <AuthForm/>
         return (
             <Layout style={{height: '100%', background: 'white'}}>
                 <Sider
@@ -86,7 +93,7 @@ export class App extends React.Component<AppProps, AppState>
                     <Menu theme="dark"
                           mode="inline"
                           onSelect={this.onMenuSelected}
-                          defaultSelectedKeys={[this.props.location.pathname]}>
+                          defaultSelectedKeys={[pathname ]}>
                         <Menu.Item key="/auth">
                             <Icon type="user"/>
                             <span className="nav-text">Login</span>
@@ -114,11 +121,12 @@ export class App extends React.Component<AppProps, AppState>
                             transitionName="example"
                             transitionEnterTimeout={300}
                             transitionLeaveTimeout={50}>
-                            {React.cloneElement(this.props.children as ReactElement<any>, {
-                                key: location.hash
+                            {React.cloneElement(contentView as ReactElement<any>, {
+                                key: location.pathname
                             })}
-                            {/*{this.props.children}*/}
+
                         </ReactCSSTransitionGroup>
+                        {/*{contentView}*/}
                     </Content>
                 </Layout>
             </Layout>
