@@ -88,7 +88,7 @@ export class App extends React.Component<AppProps, AppState>
 
     render()
     {
-        console.log("Current location: " + this.props.location)
+        console.log("Current location: " + this.props.location.pathname)
         // if (this.props.children == null)
         //     return <div> children null </div>
 
@@ -105,7 +105,7 @@ export class App extends React.Component<AppProps, AppState>
                     <Menu theme="dark"
                           mode="inline"
                           onSelect={this.onMenuSelected}
-                          defaultSelectedKeys={['/auth']}>
+                          defaultSelectedKeys={[this.props.location.pathname]}>
                         <Menu.Item key="/auth">
                             <Icon type="user"/>
                             <span className="nav-text">Login</span>
@@ -136,7 +136,6 @@ export class App extends React.Component<AppProps, AppState>
                             {React.cloneElement(this.props.children as ReactElement<any>, {
                                 key: location.hash
                             })}
-                            {/*{this.props.children}*/}
                         </ReactCSSTransitionGroup>
                     </Content>
                 </Layout>
