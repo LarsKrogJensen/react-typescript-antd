@@ -4,11 +4,21 @@ import './index.css';
 import './theme.less'
 
 import { App } from "./components/App"
+import { AuthForm } from "./components/AuthForm"
+import { SearchPanel } from "./components/SearchPanel"
+import { GridTest } from "./components/GrdTest"
 
-import "es6-promise"; // promise pollyfill
-
+import "es6-promise";
+import {Router, Route, hashHistory} from "react-router";
 
 ReactDOM.render(
-  <App/>,
+    <Router history={hashHistory}>
+        <Route path="/" component={App}>
+          {/* make them children of `App` */}
+          <Route path="/auth" component={AuthForm}/>
+          <Route path="/search" component={SearchPanel}/>
+          <Route path="/test" component={GridTest}/>
+        </Route>
+      </Router>,
   document.getElementById("app")
 );
