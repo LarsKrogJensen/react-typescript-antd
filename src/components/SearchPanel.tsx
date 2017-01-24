@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Table, Row, Col, Input} from "antd";
-import {TableColumnConfig} from "antd/lib/table/Table";
+//import {TableColumnConfig} from "antd/lib/table/Table";
 import {util} from "../util/util";
 import {RowEx} from "./LayoutEx";
 const Search = Input.Search;
@@ -21,12 +21,11 @@ export interface IUser
 
 }
 
-export class SearchTable extends Table<IUser>
+class SearchTable extends Table<IUser>
 {
-    constructor(props: any)
-    {
-        super(props);
-    }
+}
+class SearchColumn extends Table.Column<IUser>
+{
 }
 
 export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelState>
@@ -40,23 +39,6 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
     render()
     {
         //noinspection JSMismatchedCollectionQueryUpdate
-        const columns: TableColumnConfig<IUser>[] = [{
-            title: 'Name',
-            dataIndex: 'name',
-            width: 150,
-            sorter: util.strCompare
-        }, {
-            title: 'Age',
-            dataIndex: 'age',
-            width: 150,
-            sorter: util.numCompare
-        }, {
-            title: 'Address',
-            dataIndex: 'address',
-            sorter: util.strCompare
-        }];
-
-        //noinspection JSMismatchedCollectionQueryUpdate
         const data: IUser[] = [];
         for (let i = 0; i < 100; i++) {
             data.push({
@@ -68,20 +50,32 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
         }
 
         return <div>
-            <RowEx paddingBottom={24}>
+            <Row style={{paddingBottom: 24}} gutter={10}>
                 <Col span={24}>
                     <Search
                         placeholder="input search text"
                         style={{ width: 200 }}
                         onSearch={(value: any) => console.log(value)}/>
                 </Col>
-            </RowEx>
+            </Row>
             <Row>
                 <Col span={24}>
-                    <SearchTable columns={columns}
-                                 dataSource={data}
+                    <SearchTable dataSource={data}
                                  pagination={false}
-                                 size="small"/>
+                                 bordered={false}
+                                 size="small">
+                        <SearchColumn title='Name'
+                                      dataIndex='name'
+                                      width={150}
+                                      sorter={util.strCompare}/>
+                        <SearchColumn title='Age'
+                                      dataIndex='age'
+                                      width={150}
+                                      sorter={util.numCompare}/>
+                        <SearchColumn title='Address'
+                                      dataIndex='address'
+                                      sorter={util.strCompare}/>
+                    </SearchTable>
                 </Col>
             </Row>
         </div>

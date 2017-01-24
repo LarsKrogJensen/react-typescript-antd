@@ -8,11 +8,11 @@ const FormItem = Form.Item;
 export interface AuthFormProps extends FormProps
 {
 }
-// interface AuthFormState
-// {
-// }
+interface AuthFormState
+{
+}
 
-class AuthForm extends React.Component<AuthFormProps, any>
+class AuthForm extends React.Component<AuthFormProps, AuthFormState>
 {
     constructor(props: AuthFormProps, context: any)
     {

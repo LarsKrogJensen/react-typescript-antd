@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Row} from "antd";
 import {RowProps} from "antd/lib/grid/row";
-
+// import * as lodash from "lodash";
 export interface PaddingEx
 {
     /**
@@ -30,9 +30,9 @@ export interface PaddingEx
      */
     paddingTop?: any;
 }
+
 export interface RowExProps extends RowProps, PaddingEx
 {
-    [key: string]: any;
 }
 
 export class RowEx extends React.Component<RowExProps, any>
@@ -42,22 +42,54 @@ export class RowEx extends React.Component<RowExProps, any>
         super(props, context);
     }
 
+    private reduceFields(source: RowExProps): RowProps
+    {
+        let rowProps: Pick<RowProps, keyof RowProps> = {
+            ...source
+        };
+        let p1: RowProps = {}
+        let p2 = this.copyFields(p1, rowProps)
+
+        return rowProps as Pick<RowProps, keyof RowProps>
+    }
+
+    private copyFields<T, K extends keyof T>(target: T, source: Pick<T, K>)
+    {
+        for (let id in source) {
+            target[id] = source[id];
+        }
+        return target;
+    }
 
     render()
     {
-        var rowProps = limitedAssign(this.props)
+
+        //let rowProps = limitedAssign(this.props)
+        let rowProps = this.reduceFields(this.props)
+        //Object.
         return <Row style={this.props} {...rowProps}>{this.props.children}</Row>
     }
 }
 
-function limitedAssign(source: RowExProps): RowProps
-{
-    var dest: RowProps = {}
-    var dest2: RowExProps = {}
-    for (var propKey in dest) {
-        if (source[propKey] && dest.hasOwnProperty(propKey)) {
-            dest2[propKey] = source[propKey];
-        }
-    }
-    return dest2;
-}
+// function pick<T, K extends keyof T>(obj: T, ...keys: K[]): Pick<T, K>
+// {
+//     // [key in keys] :
+//   return null;
+// }
+
+// function limitedAssign(source: RowExProps): RowProps
+// {
+//     const dest: RowProps = {};
+//     const dest2: RowExProps = {};
+//     for (let propKey in source) {
+//         if (dest.hasOwnProperty(propKey)) {
+//             dest2[propKey] = source[propKey];
+//         }
+//     }
+//     return dest2;
+// }
+
+// type MyPick<T, K extends keyof T> = {
+//     [P in K]: T[P];
+// }
+
