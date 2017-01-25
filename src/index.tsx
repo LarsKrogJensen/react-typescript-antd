@@ -7,16 +7,22 @@ import {AuthForm} from "./components/AuthForm";
 import {SearchPanel} from "./components/SearchPanel";
 import {GridTest} from "./components/GrdTest";
 import "es6-promise";
-import {Router, Route, browserHistory} from "react-router";
+import {Router, Route, browserHistory, IndexRedirect} from "react-router";
 import {NotFound} from "./components/NotFound";
+import {DimensionsTest} from "./components/DimensionsTest";
+//import * as Dimensions from "react-container-dimensions/lib";
+
+// declare let Dimensions:any
+// window["Dimensions"] = Dimensions
 
 ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/" component={App}>
-            <Route path="/" component={AuthForm}/>
+            <IndexRedirect to="/auth"/>
             <Route path="/auth" component={AuthForm}/>
             <Route path="/search" component={SearchPanel}/>
             <Route path="/test" component={GridTest}/>
+            <Route path="/dimensions" component={DimensionsTest}/>
             <Route path="*" component={NotFound}/>
 
         </Route>

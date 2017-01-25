@@ -1,13 +1,13 @@
 import "./app.css";
 import * as React from "react";
 import {api} from "../util/api";
-import {AuthForm} from "./AuthForm"
 import {Layout, Menu, Icon, Row, Col} from "antd";
 import {SelectParam} from "antd/lib/menu";
 import "../assets/kambi-logo.png";
-import {Router, Link, browserHistory} from "react-router";
+import {Router, browserHistory} from "react-router";
 import ReactCSSTransitionGroup = require("react-addons-css-transition-group");
 import ReactElement = React.ReactElement;
+import {AppNav} from "./AppNav";
 const {Header, Content, Sider} = Layout;
 
 export interface AppProps extends Router.RouteComponentProps<any, any>
@@ -54,13 +54,7 @@ export class App extends React.Component<AppProps, AppState>
         console.log(param.key);
         browserHistory.push(param.key)
     }
-
-    protected shouldComponentUpdate(prevState: AppProps, nextState: AppProps) :boolean
-    {
-       console.log("Should update")
-        return true
-    }
-
+    
     private renderLogo(): JSX.Element
     {
         if (this.state.collapsed) {
@@ -75,38 +69,16 @@ export class App extends React.Component<AppProps, AppState>
         let pathname = this.props.location.pathname;
         console.log("Current location: " + pathname)
 
-        if (pathname == "/")
-            pathname = "/auth"
-        let contentView = this.props.children
-        if (contentView == null)
-            contentView = <AuthForm/>
         return (
             <Layout style={{height: '100%', background: 'white'}}>
-                <Sider
-                    collapsible
-                    collapsed={this.state.collapsed}
-                    onCollapse={this.onCollapse}>
+                <Sider collapsible
+                       collapsed={this.state.collapsed}
+                       onCollapse={this.onCollapse}>
                     <div className="logo">
                         {this.renderLogo()}
                     </div>
 
-                    <Menu theme="dark"
-                          mode="inline"
-                          onSelect={this.onMenuSelected}
-                          defaultSelectedKeys={[pathname ]}>
-                        <Menu.Item key="/auth">
-                            <Icon type="user"/>
-                            <span className="nav-text">Login</span>
-                        </Menu.Item>
-                        <Menu.Item key="/search">
-                            <Icon type="search"/>
-                            <span className="nav-text">Search</span>
-                        </Menu.Item>
-                        <Menu.Item key="/test">
-                            <Icon type="upload"/>
-                            <span className="nav-text">Test</span>
-                        </Menu.Item>
-                    </Menu>
+                    <AppNav path={pathname}/>
                 </Sider>
                 <Layout>
                     <Header className="header">
@@ -121,12 +93,10 @@ export class App extends React.Component<AppProps, AppState>
                             transitionName="example"
                             transitionEnterTimeout={300}
                             transitionLeaveTimeout={50}>
-                            {React.cloneElement(contentView as ReactElement<any>, {
+                            {React.cloneElement(this.props.children as ReactElement<any>, {
                                 key: location.pathname
                             })}
-
                         </ReactCSSTransitionGroup>
-                        {/*{contentView}*/}
                     </Content>
                 </Layout>
             </Layout>
