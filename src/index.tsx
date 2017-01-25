@@ -15,6 +15,8 @@ import {DimensionsTest} from "./components/DimensionsTest";
 // declare let Dimensions:any
 // window["Dimensions"] = Dimensions
 
+
+
 ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/" component={App}>

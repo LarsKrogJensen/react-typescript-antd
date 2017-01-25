@@ -1,5 +1,6 @@
 import * as React from "react";
-import "react-container-dimensions/lib";
+// import * as ContainerDimensions from "react-container-dimensions";
+// import "react-container-dimensions/lib"
 
 declare let ContainerDimensions:any; // We have no typings
 
@@ -16,16 +17,18 @@ export class DimensionsTest extends React.Component<SizeProps, any>
         super(props, context);
     }
 
+    
+
 
     render(): JSX.Element|any
     {
         return (
-            <ContainerDimensions>
+            // <ContainerDimensions>
                 <div>
                     containerWidth={this.props.containerWidth}
                     containerHeight={this.props.containerHeight}
                 </div>
-            </ContainerDimensions>
+            // </ContainerDimensions>
         )
     }
 }

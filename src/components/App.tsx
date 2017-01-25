@@ -58,10 +58,10 @@ export class App extends React.Component<AppProps, AppState>
     private renderLogo(): JSX.Element
     {
         if (this.state.collapsed) {
-            return <img width={24} height={24} src="dist/assets/slack.svg"/>
+            return <img width={32} height={32} src="dist/assets/slack.svg"/>
         }
 
-        return <img width={32} height={32} src="dist/assets/slack.svg"/>
+        return <img width={120} height={40} src="dist/assets/slack-logo.svg"/>
     }
 
     render()
