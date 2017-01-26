@@ -1,10 +1,11 @@
 import * as React from "react";
-import {Table, Row, Col, Input, Icon} from "antd";
+import {Table, Row, Col, Input, Icon, Alert} from "antd";
 import {util} from "../util/util";
 import * as lodash from "lodash";
 import {api} from "../util/api";
 import {SearchItem} from "../typings";
 import Cancelable = _.Cancelable;
+import {browserHistory} from "react-router";
 
 const Search = Input.Search;
 
@@ -12,7 +13,7 @@ const Search = Input.Search;
 export interface SearchPanelProps
 {
     initSearch?: string;
-    token?: string;
+    token: string;
 }
 
 interface SearchPanelState
@@ -23,8 +24,12 @@ interface SearchPanelState
 }
 
 
-class SearchTable extends Table<SearchItem> { }
-class SearchColumn extends Table.Column<SearchItem> { }
+class SearchTable extends Table<SearchItem>
+{
+}
+class SearchColumn extends Table.Column<SearchItem>
+{
+}
 
 type PartialState = Partial<SearchPanelState>;
 
@@ -69,8 +74,10 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
     {
         let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJPaWtLQWZxSFkyeHBaVzUwU1VSQ2MybDRpMk55WldGMGFXOXVWR2x0WlZ3eU1ERTNMVEF4TFRJMlZEQTNPalE0T2pRd0xqWTJNaXN3TVRvd01Qcz0uMDgzM2ViMTRlMTQzYzg1YWE2YzcxZGYyZDg5OTA5NDExMjg3Njc4ZCIsImlhdCI6MTQ4NTQxMzMyMX0=.ClgE3NNz29DdL2lwWE5ZqCPrJTcT4qbDwPRst1Tbsuc="
         let searchResults: SearchItem[] = await api.search(token, searchText);
-        this.updateState({table: searchResults,
-                         loading: false})
+        this.updateState({
+                             table: searchResults,
+                             loading: false
+                         })
     }
 
     private async performSearch()
@@ -99,6 +106,20 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
             // filterReset: '??',
             emptyText: <span><Icon type="frown-o"/>Nothing found</span>,
         };
+
+        if (this.props.token == null) {
+            return (
+                <Alert
+                    message="Not authenticated"
+                    description="This page requires a valid token, please sign in and try again"
+                    type="error"
+                    showIcon
+                    closable
+                    closeText="LOG IN"
+                    onClose={() => {browserHistory.push("/auth")}}
+                />
+            )
+        }
 
         return <div>
             <Row style={{paddingBottom: 24}} gutter={10}>

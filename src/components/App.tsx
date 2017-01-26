@@ -100,10 +100,10 @@ export class App extends React.Component<AppProps, AppState>
                         <Content style={{ padding: 24 }}>
                             <ReactCSSTransitionGroup
                                 component="div"
+                                transitionLeave={false}
                                 transitionName="example"
-                                transitionEnterTimeout={300}
-                                transitionLeaveTimeout={50}>
-                                {React.cloneElement(this.props.children as ReactElement<any>, {
+                                transitionEnterTimeout={300}>
+                            {React.cloneElement(this.props.children as ReactElement<any>, {
                                     key: location.pathname
                                 })}
                             </ReactCSSTransitionGroup>

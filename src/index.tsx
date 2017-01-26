@@ -21,7 +21,7 @@ ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/" component={App}>
             <IndexRedirect to="/auth"/>
-            <Route path="/auth" component={AuthForm}/>
+            <Route path="/auth" component={AuthForm }/>
             <Route path="/search" component={SearchPanel}/>
             <Route path="/test" component={GridTest}/>
             <Route path="/dimensions" component={DimensionsTest}/>
