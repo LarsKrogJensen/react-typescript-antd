@@ -1,14 +1,8 @@
 // import {fetch} from 'whatwg-fetch'
+import {SearchItem} from "../typings"
 
 export module api
 {
-    export interface SearchItem
-    {
-        id?: string;
-        name?: string;
-        longName?: string;
-    }
-
     export interface AccessToken
     {
         access_token?: string;

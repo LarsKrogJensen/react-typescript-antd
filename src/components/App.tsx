@@ -88,9 +88,9 @@ export class App extends React.Component<AppProps, AppState>
                             <Col>
                                 {/*<div style={{color: "white"}}>SOME TEXT</div>*/}
                                 <Search
-                                    theme="dark"
                                     placeholder="input search text"
                                     style={{ width: 200 }}
+
                                     onSearch={(value: any) => console.log(value)}/>
                             </Col>
                         </Row>
