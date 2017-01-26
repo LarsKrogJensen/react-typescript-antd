@@ -7,6 +7,7 @@ import {SearchItem} from "../typings";
 import Cancelable = _.Cancelable;
 import {browserHistory} from "react-router";
 import AccessToken = api.AccessToken;
+import {AppStore} from "./AppStore";
 
 const Search = Input.Search;
 
@@ -14,7 +15,7 @@ const Search = Input.Search;
 export interface SearchPanelProps
 {
     initSearch?: string;
-    token?: AccessToken;
+    appStore?: AppStore
 }
 
 interface SearchPanelState
@@ -34,18 +35,11 @@ class SearchColumn extends Table.Column<SearchItem>
 
 type PartialState = Partial<SearchPanelState>;
 
-// class BasComponent<P,S> extends React.Component<P,S>
-// {
-//     constructor(props: P, context: any)
-//     {
-//         super(props, context);
-//     }
-//
-//     protected updateState(state: Partial<S>, callback?: () => any)
-//     {
-//         this.setState({...this.state, ...state})
-//     }
-// }
+let savedState: SearchPanelState = {
+    loading: false,
+    table: [],
+    searchText: ""
+}
 
 export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelState>
 {
@@ -57,13 +51,14 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
     constructor(props: SearchPanelProps, context: any)
     {
         super(props, context);
-        //this.props.token =
-        this.state = {
-            loading: false,
-            searchText: "",
-            table: []
-        }
+
+        this.state = savedState;
+         
         this.onSearchTextChanged = this.onSearchTextChanged.bind(this);
+    }
+
+    protected componentWillUnmount() {
+        savedState = this.state;
     }
 
     private updateState(state: PartialState, callback?: () => any)
@@ -73,7 +68,7 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
 
     private async doSearch(searchText: string)
     {
-        let searchResults: SearchItem[] = await api.search(this.props.token.access_token, searchText);
+        let searchResults: SearchItem[] = await api.search(this.props.appStore.token.access_token, searchText);
         this.updateState({
                              table: searchResults,
                              loading: false
@@ -101,13 +96,11 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
     render()
     {
         let locale = {
-            // filterTitle: '??',
-            // filterConfirm: '??',
-            // filterReset: '??',
             emptyText: <span><Icon type="frown-o"/>Nothing found</span>,
         };
 
-        if (this.props.token == null || this.props.token.access_token == null) {
+        let token = this.props.appStore.token;
+        if (token == null || token.access_token == null) {
             return (
                 <Alert
                     message="Not authenticated"
@@ -116,7 +109,7 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
                     showIcon
                     closable
                     closeText="LOG IN"
-                    onClose={() => {browserHistory.push("/auth")}}
+                    onClose={() => { browserHistory.push({pathname: "/auth", query: {goto: "/search"}})}}
                 />
             )
         }
@@ -127,6 +120,7 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
                     <Search
                         placeholder="input search text"
                         style={{ width: 200 }}
+                        defaultValue={this.state.searchText}
                         onChange={this.onSearchTextChanged}
                         onSearch={(value: any) => console.log(value)}/>
                 </Col>

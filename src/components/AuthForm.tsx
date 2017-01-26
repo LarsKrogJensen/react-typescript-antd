@@ -1,21 +1,24 @@
 import * as React from "react";
-import {Form, Icon, Input, Button, Checkbox} from "antd";
+import * as qs from "qs";
+import {browserHistory} from "react-router";
+import {Form, Icon, Input, Button, Checkbox, Alert} from "antd";
 import {FormProps} from "antd/lib/form/Form";
 import "./AuthForm.css";
 import {util} from "../util/util";
 import {api} from "../util/api";
+import {AppStore} from "./AppStore";
 import AccessToken = api.AccessToken;
 import isNullOrEmpty = util.isNullOrEmpty;
+
 const FormItem = Form.Item;
 
 
 export interface AuthFormProps extends FormProps
 {
-    onToken: (token: AccessToken) => void;
+    appStore: AppStore
 }
 interface AuthFormState
 {
-    token?: AccessToken;
     loading: boolean;
     username: string;
     password: string;
@@ -24,8 +27,15 @@ interface AuthFormState
 
 type PartialState = Partial<AuthFormState>
 
+interface SearchQueryParam
+{
+    goto?: string
+}
+
 class AuthForm extends React.Component<AuthFormProps, AuthFormState>
 {
+    private queryParams: SearchQueryParam = {}
+
     constructor(props: AuthFormProps, context: any)
     {
         super(props, context);
@@ -36,6 +46,12 @@ class AuthForm extends React.Component<AuthFormProps, AuthFormState>
             password: "",
             remember: false
         }
+        let params = location.search;
+        if (params != null) {
+            params = params.substr(params.indexOf("?") + 1)
+            this.queryParams = qs.parse(params)
+        }
+        console.log("Location search: " + location.search)
     }
 
     private updateState(state: PartialState, callback?: () => any)
@@ -55,7 +71,7 @@ class AuthForm extends React.Component<AuthFormProps, AuthFormState>
                                                                     ...values
                                                                 }, () =>
                                                                 {
-                                                                  this.authenticate()
+                                                                    this.authenticate()
                                                                 })
                                            }
                                        });
@@ -63,32 +79,42 @@ class AuthForm extends React.Component<AuthFormProps, AuthFormState>
 
     private async authenticate()
     {
-
-        this.updateState({ loading: true });
+        this.updateState({loading: true});
         try {
-            let result: AccessToken = await api.fetchAccessToken(this.state.username, this.state.password);
-            //console.log("Accesstoken: " + result.access_token + "error: " + result.error)
-            this.updateState({ token: result, loading: false});
-            //window.localStorage.setItem("api-usr", this.state.username);
-            //window.localStorage.setItem("api-pwd", this.state.password);
-            this.props.onToken(result);
-        } catch (e) {
-            this.updateState({
-                              token: {
-                                  error: "Authentication failed",
-                                  error_description: e.message
-                              },
-                              loading: false
-                          }, () => this.props.onToken(this.state.token));
+            this.props.appStore.token = await api.fetchAccessToken(this.state.username, this.state.password)
+            this.updateState({loading: false});
+            if (this.queryParams.goto != null)
+                browserHistory.push(this.queryParams.goto)
 
+        } catch (e) {
+            this.props.appStore.token = {
+                error: "Authentication failed",
+                error_description: e.message
+            }
+            this.updateState({loading: false});
         }
     }
 
-    render()
+    private renderForm()
     {
         const {getFieldDecorator} = this.props.form;
+
+        let alert = null;
+
+        let token = this.props.appStore.token;
+        if (token != null && token.error != null) {
+            alert = (
+                <Alert
+                    message="Login failed"
+                    description={token.error}
+                    type="error"
+                    showIcon
+                />)
+        }
+
         return (
             <Form onSubmit={this.handleSubmit} className="login-form">
+                {alert}
                 <FormItem>
                     {getFieldDecorator('username', {
                         rules: [{required: true, message: 'Please input your username!'}],
@@ -126,6 +152,23 @@ class AuthForm extends React.Component<AuthFormProps, AuthFormState>
                 </FormItem>
             </Form>
         )
+    }
+
+    render()
+    {
+        let token = this.props.appStore.token;
+        if (token != null && token.access_token != null) {
+            return (
+                <Alert
+                    message="Authenticated"
+                    description="You are already successfully authenticated"
+                    type="success"
+                    showIcon
+                />
+            )
+        }
+
+        return this.renderForm();
     }
 }
 

@@ -7,6 +7,7 @@ import {Router, browserHistory} from "react-router";
 import {AppNav} from "./AppNav";
 import ReactCSSTransitionGroup = require("react-addons-css-transition-group");
 import ReactElement = React.ReactElement;
+import {AppStore} from "./AppStore";
 const {Header, Content, Sider} = Layout;
 const Search = Input.Search;
 
@@ -28,7 +29,6 @@ export class AppFrame extends React.Component<AppFrameProps, AppState>
     {
         super(props, context);
         this.state = {collapsed: false};
-        //this.onTokenChanged = this.onTokenChanged.bind(this);
         this.onCollapse = this.onCollapse.bind(this);
         this.onMenuSelected = this.onMenuSelected.bind(this);
     }
@@ -37,11 +37,6 @@ export class AppFrame extends React.Component<AppFrameProps, AppState>
     {
         this.setState({...this.state, ...state})
     }
-
-    // private onTokenChanged(token: api.AccessToken)
-    // {
-    //     this.updateState({token: token});
-    // }
 
     private onCollapse(collapsed: boolean)
     {

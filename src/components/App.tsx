@@ -3,19 +3,18 @@ import {AuthForm} from "./AuthForm";
 import {SearchPanel} from "./SearchPanel";
 import {GridTest} from "./GrdTest";
 import "es6-promise";
-import {Router, Route, browserHistory, IndexRedirect} from "react-router";
+import {Router, Route, browserHistory, IndexRedirect, RouterState} from "react-router";
 import {NotFound} from "./NotFound";
 import {DimensionsTest} from "./DimensionsTest";
 import {AppFrame} from "./AppFrame";
 import {api} from "../util/api";
 import AccessToken = api.AccessToken;
+import {AppStore} from "./AppStore";
 
-interface AppState
+
+export class App extends React.Component<any, any>
 {
-    token?: AccessToken
-}
-export class App extends React.Component<any, AppState>
-{
+    private appStore: AppStore = new AppStore();
 
     constructor(props: any, context: any)
     {
@@ -23,23 +22,28 @@ export class App extends React.Component<any, AppState>
         this.onTokenChanged = this.onTokenChanged.bind(this)
         this.createAuthView = this.createAuthView.bind(this)
         this.createSearchView = this.createSearchView.bind(this)
-        this.state = {}
     }
 
     private createSearchView()
     {
-        return <SearchPanel token={this.state.token}/>
+        return <SearchPanel appStore={this.appStore}/>
     }
 
     private createAuthView()
     {
-        return <AuthForm onToken={this.onTokenChanged}/>
+        return <AuthForm appStore={this.appStore}/>
     }
+    private onAuthViewEnter(nextState: RouterState)
+    {
+
+    }
+
 
     private onTokenChanged(token: api.AccessToken)
     {
         this.setState({token: token});
     }
+
 
     render()
     {
@@ -47,7 +51,7 @@ export class App extends React.Component<any, AppState>
             <Router history={browserHistory}>
                 <Route path="/" component={AppFrame}>
                     <IndexRedirect to="/auth"/>
-                    <Route path="/auth" component={this.createAuthView }/>
+                    <Route path="/auth" component={this.createAuthView } />
                     <Route path="/search" component={this.createSearchView}/>
                     <Route path="/test" component={GridTest}/>
                     <Route path="/dimensions" component={DimensionsTest}/>
