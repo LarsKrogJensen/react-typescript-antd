@@ -10,10 +10,10 @@ import "es6-promise";
 import {Router, Route, browserHistory, IndexRedirect} from "react-router";
 import {NotFound} from "./components/NotFound";
 import {DimensionsTest} from "./components/DimensionsTest";
-//import * as Dimensions from "react-container-dimensions/lib";
+//import * as wrapDimensions from "react-container-dimensions/lib";
 
-// declare let Dimensions:any
-// window["Dimensions"] = Dimensions
+// declare let wrapDimensions:any
+// window["wrapDimensions"] = wrapDimensions
 
 
 

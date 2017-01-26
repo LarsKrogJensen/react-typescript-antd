@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node dev-server.js",
     "lint": "tslint src/*.tsx src/**/*.tsx",
-    "test": "jest"
+    "test": "jest",
+    "gql-gen": "gql-gen --url http://localhost:8080/graphql --header \"Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJPaWtLQWZxSFkyeHBaVzUwU1VSQ2MybDRpMk55WldGMGFXOXVWR2x0WlZ3eU1ERTNMVEF4TFRJMlZEQTNPalE0T2pRd0xqWTJNaXN3TVRvd01Qcz0uMDgzM2ViMTRlMTQzYzg1YWE2YzcxZGYyZDg5OTA5NDExMjg3Njc4ZCIsImlhdCI6MTQ4NTQxMzMyMX0=.ClgE3NNz29DdL2lwWE5ZqCPrJTcT4qbDwPRst1Tbsuc=\" --template typescript-single --out ./src/typings.ts"
   },
   "private": true,
   "author": "Lars",
@@ -39,12 +40,13 @@
     "webpack-dev-server": "^2.1.0-beta.12"
   },
   "dependencies": {
+    "@types/element-resize-event": "^1.0.30",
     "antd": "^2.6.4",
+    "element-resize-event": "^2.0.7",
     "es6-promise": "^4.0.5",
     "lodash": "^4.17.4",
     "react": "^15.4.1",
     "react-addons-css-transition-group": "^15.4.2",
-    "react-container-dimensions": "^1.3.0",
     "react-dom": "^15.4.1",
     "react-router": "^3.0.2",
     "whatwg-fetch": "^2.0.1"

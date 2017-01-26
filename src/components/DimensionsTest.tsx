@@ -1,39 +1,58 @@
 import * as React from "react";
-// import * as ContainerDimensions from "react-container-dimensions";
-// import "react-container-dimensions/lib"
+import {wrapDimensions} from "./Dimensions";
+import {Layout, Row} from "antd";
+import ComponentClass = React.ComponentClass;
+const {Header, Content, Sider} = Layout;
 
-declare let ContainerDimensions:any; // We have no typings
-
-interface SizeProps
+export interface SizeProps
 {
-    containerWidth: number;
-    containerHeight: number;
+    containerWidth?: number;
+    containerHeight?: number;
 }
 
-export class DimensionsTest extends React.Component<SizeProps, any>
+export interface SizeState
+{
+}
+
+export class DimensionsTest extends React.Component<any, any>
 {
     constructor(props: SizeProps, context: any)
     {
         super(props, context);
     }
 
-    
-
-
     render(): JSX.Element|any
     {
         return (
-            // <ContainerDimensions>
-                <div>
-                    containerWidth={this.props.containerWidth}
-                    containerHeight={this.props.containerHeight}
-                </div>
-            // </ContainerDimensions>
+            <div className="box1">
+                asalskalska
+            </div>
         )
     }
 }
 
+class SizedTable extends React.Component<SizeProps, SizeState>
+{
+    constructor(props: SizeProps, context: any)
+    {
+        super(props, context);
+    }
 
-// const Wrapped = Dimensions(DimensionsTest);
-//
-// export {Wrapped as DimensionsTest}
+    render()
+    {
+        let style = {
+            width: this.props.containerWidth,
+            height: this.props.containerHeight
+        };
+
+        return (<div style={style}>
+            containerWidth={this.props.containerWidth}
+            containerHeight={this.props.containerHeight}
+        </div>)
+    }
+}
+
+
+const EnhancedTable = wrapDimensions()(SizedTable)
+
+//export {EnhancedTable as DimensionsTest}

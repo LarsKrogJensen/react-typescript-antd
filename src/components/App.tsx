@@ -1,14 +1,15 @@
 import "./app.css";
 import * as React from "react";
 import {api} from "../util/api";
-import {Layout, Menu, Icon, Row, Col} from "antd";
+import {Layout, Row, Col, Input} from "antd";
 import {SelectParam} from "antd/lib/menu";
 import "../assets/kambi-logo.png";
 import {Router, browserHistory} from "react-router";
+import {AppNav} from "./AppNav";
 import ReactCSSTransitionGroup = require("react-addons-css-transition-group");
 import ReactElement = React.ReactElement;
-import {AppNav} from "./AppNav";
 const {Header, Content, Sider} = Layout;
+const Search = Input.Search;
 
 export interface AppProps extends Router.RouteComponentProps<any, any>
 {
@@ -54,7 +55,7 @@ export class App extends React.Component<AppProps, AppState>
         console.log(param.key);
         browserHistory.push(param.key)
     }
-    
+
     private renderLogo(): JSX.Element
     {
         if (this.state.collapsed) {
@@ -70,7 +71,7 @@ export class App extends React.Component<AppProps, AppState>
         console.log("Current location: " + pathname)
 
         return (
-            <Layout style={{height: '100%', background: 'white'}}>
+            <Layout style={{height: '100%'}}>
                 <Sider collapsible
                        collapsed={this.state.collapsed}
                        onCollapse={this.onCollapse}>
@@ -80,26 +81,41 @@ export class App extends React.Component<AppProps, AppState>
 
                     <AppNav path={pathname}/>
                 </Sider>
+
                 <Layout>
                     <Header className="header">
                         <Row type="flex" justify="end" align="middle" style={{height:"100%"}}>
                             <Col>
-                                <div style={{color: "white"}}>SOME TEXT</div>
+                                {/*<div style={{color: "white"}}>SOME TEXT</div>*/}
+                                <Search
+                                    theme="dark"
+                                    placeholder="input search text"
+                                    style={{ width: 200 }}
+                                    onSearch={(value: any) => console.log(value)}/>
                             </Col>
                         </Row>
                     </Header>
-                    <Content style={{ padding: 24 }}>
-                        <ReactCSSTransitionGroup
-                            transitionName="example"
-                            transitionEnterTimeout={300}
-                            transitionLeaveTimeout={50}>
-                            {React.cloneElement(this.props.children as ReactElement<any>, {
-                                key: location.pathname
-                            })}
-                        </ReactCSSTransitionGroup>
-                    </Content>
+
+                    <Layout>
+                        <Content style={{ padding: 24 }}>
+                            <ReactCSSTransitionGroup
+                                component="div"
+                                transitionName="example"
+                                transitionEnterTimeout={300}
+                                transitionLeaveTimeout={50}>
+                                {React.cloneElement(this.props.children as ReactElement<any>, {
+                                    key: location.pathname
+                                })}
+                            </ReactCSSTransitionGroup>
+                        </Content>
+                    </Layout>
                 </Layout>
             </Layout>
         )
     }
 }
+
+// function FirstChild(props: AppProps) {
+//   const childrenArray: React.ReactChild[] = React.Children.toArray(props.children);
+//   return childrenArray[0] ;
+// }
