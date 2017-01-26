@@ -6,6 +6,7 @@ import {api} from "../util/api";
 import {SearchItem} from "../typings";
 import Cancelable = _.Cancelable;
 import {browserHistory} from "react-router";
+import AccessToken = api.AccessToken;
 
 const Search = Input.Search;
 
@@ -13,7 +14,7 @@ const Search = Input.Search;
 export interface SearchPanelProps
 {
     initSearch?: string;
-    token: string;
+    token?: AccessToken;
 }
 
 interface SearchPanelState
@@ -72,8 +73,7 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
 
     private async doSearch(searchText: string)
     {
-        let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJPaWtLQWZxSFkyeHBaVzUwU1VSQ2MybDRpMk55WldGMGFXOXVWR2x0WlZ3eU1ERTNMVEF4TFRJMlZEQTNPalE0T2pRd0xqWTJNaXN3TVRvd01Qcz0uMDgzM2ViMTRlMTQzYzg1YWE2YzcxZGYyZDg5OTA5NDExMjg3Njc4ZCIsImlhdCI6MTQ4NTQxMzMyMX0=.ClgE3NNz29DdL2lwWE5ZqCPrJTcT4qbDwPRst1Tbsuc="
-        let searchResults: SearchItem[] = await api.search(token, searchText);
+        let searchResults: SearchItem[] = await api.search(this.props.token.access_token, searchText);
         this.updateState({
                              table: searchResults,
                              loading: false
@@ -107,7 +107,7 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
             emptyText: <span><Icon type="frown-o"/>Nothing found</span>,
         };
 
-        if (this.props.token == null) {
+        if (this.props.token == null || this.props.token.access_token == null) {
             return (
                 <Alert
                     message="Not authenticated"

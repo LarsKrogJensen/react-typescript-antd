@@ -11,6 +11,7 @@ const FormItem = Form.Item;
 
 export interface AuthFormProps extends FormProps
 {
+    onToken: (token: AccessToken) => void;
 }
 interface AuthFormState
 {
@@ -66,11 +67,11 @@ class AuthForm extends React.Component<AuthFormProps, AuthFormState>
         this.updateState({ loading: true });
         try {
             let result: AccessToken = await api.fetchAccessToken(this.state.username, this.state.password);
-            console.log("Accesstoken: " + result.access_token + "error: " + result.error)
+            //console.log("Accesstoken: " + result.access_token + "error: " + result.error)
             this.updateState({ token: result, loading: false});
             //window.localStorage.setItem("api-usr", this.state.username);
             //window.localStorage.setItem("api-pwd", this.state.password);
-            //this.props.onToken(result);
+            this.props.onToken(result);
         } catch (e) {
             this.updateState({
                               token: {
@@ -78,7 +79,8 @@ class AuthForm extends React.Component<AuthFormProps, AuthFormState>
                                   error_description: e.message
                               },
                               loading: false
-                          });
+                          }, () => this.props.onToken(this.state.token));
+
         }
     }
 
