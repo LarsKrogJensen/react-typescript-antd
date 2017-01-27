@@ -107,7 +107,7 @@ export class SearchPanel extends React.Component<SearchPanelProps, SearchPanelSt
                     description="This page requires a valid token, please sign in and try again"
                     type="error"
                     showIcon
-                    closable
+                    closable                    
                     closeText="LOG IN"
                     onClose={() => { browserHistory.push({pathname: "/auth", query: {goto: "/search"}})}}
                 />

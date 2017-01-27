@@ -79,6 +79,7 @@ class AuthForm extends React.Component<AuthFormProps, AuthFormState>
 
     private async authenticate()
     {
+        this.props.appStore.token = null;
         this.updateState({loading: true});
         try {
             this.props.appStore.token = await api.fetchAccessToken(this.state.username, this.state.password)

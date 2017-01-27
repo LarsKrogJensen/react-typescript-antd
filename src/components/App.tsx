@@ -33,6 +33,7 @@ export class App extends React.Component<any, any>
     {
         return <AuthForm appStore={this.appStore}/>
     }
+    
     private onAuthViewEnter(nextState: RouterState)
     {
 
